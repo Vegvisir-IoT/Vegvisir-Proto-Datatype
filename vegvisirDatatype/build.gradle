@@ -30,13 +30,13 @@ protobuf {
     }
 }
 
-//sourceSets.main.java.srcDir new File(buildDir, 'generated/source/proto')
-//idea {
-//    module {
-//        // Marks the already(!) added srcDir as "generated"
-//        generatedSourceDirs += file('build/generated/source/proto')
-//    }
-//}
+sourceSets.main.java.srcDir new File(buildDir, 'generated/source/proto')
+idea {
+    module {
+        // Marks the already(!) added srcDir as "generated"
+        generatedSourceDirs += file('build/generated/source/proto')
+    }
+}
 
 
 
