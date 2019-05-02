@@ -11,6 +11,18 @@ import "common.proto";
 import "vegvisirCommon.proto";
 
 message Block {
+
+
+    message VectorClock {
+        message Value {
+            charlotte.CryptoId cryptoId = 1;
+            string nodeId = 2;
+            int32 index = 3;
+        }
+
+        repeated Value values = 1;
+    }
+
     message GenesisBlock {
 
     }
@@ -34,6 +46,9 @@ message Block {
         UserBlock block = 3;
     }
 
+    charlotte.CryptoId cryptoID = 4;
+
+    VectorClock clock = 5;
 }
 
 
