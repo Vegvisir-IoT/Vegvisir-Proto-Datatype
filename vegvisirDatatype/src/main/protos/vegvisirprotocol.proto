@@ -13,6 +13,28 @@ message VegvisirBlock {
     Block vegblock = 1;
 }
 
+message ProtocolVersion {
+    string name = 1;
+}
+
+message ProtocolVersions {
+    repeated ProtocolVersion protocols = 1;
+}
+
+// Maps each user's name to their leading block on a device.
+message ClockMap {
+    string name = 1;
+    int32 leader = 2;
+}
+
+message VectorClock {
+    repeated ClockMap vector_clocks = 1;
+    // The number of blocks the peer can send during a vector
+    // protocol reconciliation round.
+    int32 send_limit = 2;
+}
+
+message Update {
 // Types of requests that can be received from peer.
 message PeerRequest{
     
@@ -23,16 +45,16 @@ message PeerRequest{
         SEND_BLOCK = 3;
         ADD_BLOCK = 4;
         CREATE_POW = 5;
-        SEND_REQUEST_SET_SIZE = 6;
-        SELF_RECONCILIATION_NEEDED = 7;
-        PEER_RECONCILIATION_NEEDED = 8;
-        READY_FOR_PROTOCOL = 9;
-        END_PROTOCOL = 10;
+        SELF_RECONCILIATION_NEEDED = 6;
+        PEER_RECONCILIATION_NEEDED = 7;
+        READY_FOR_PROTOCOL = 8;
+        END_PROTOCOL = 9;
     }
 
     RequestType type = 1;
-    repeated BlockHash target_hashes = 2;
-    repeated VegvisirBlock blocks_to_add = 3;
+    repeated ProtocolVersion protocol_list = 2;
+    repeated BlockHash target_hashes = 3;
+    repeated VegvisirBlock blocks_to_add = 4;
 }
 
 
@@ -54,17 +76,38 @@ message AddBlock {
     repeated VegvisirBlock block = 1;
 }
 
-message RequestSetSize {
-    int32 rset_size = 11;
-}
 
 // Types of responses that can be sent to peer.
-message PeerResponse{
+message PeerResponse {
     oneof peer_response_types {
         FrontierSet frontier_set_response = 1;
         SendBlockchainHashes bc_hashes_response = 2;
         SendBlock send_block_response = 3;
         AddBlock add_block = 4;
-        RequestSetSize r_set_size_response = 6;
+        ProtocolVersions protocol_version_response = 5;
     }
 }
+
+// Maps each user's name to their leading block on a device.
+message ClockMap {
+    string name = 1;
+    int32 leader = 2;
+}
+
+message VectorClock {
+    repeated ClockMap vector_clocks = 1;
+}
+
+message Update {
+    oneof peer_updates {
+        VectorClock current_view = 1;
+        // TO:DO; Add least happenings updates
+}
+
+// The most general message to be received from the wire.
+message VegvisirMessage {
+    oneof message_types {
+        PeerRequest request = 1;
+        PeerResponse response = 2;
+        Update update = 3;
+} 
