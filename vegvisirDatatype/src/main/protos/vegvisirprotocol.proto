@@ -4,6 +4,18 @@ package overhaul.protos;
 
 import "overhaul/protos/charlottewrapper.proto";
 
+enum ProtocolVersion {
+    VERSION = 0;
+    SEND_ALL = 1;
+    FRONTIER = 2;
+    VECTOR = 3;
+    LATEST_HAPPENINGS = 4;
+}
+
+message ProtocolVersions {
+    repeated ProtocolVersion protocols = 1;
+}
+
 message BlockHash {
     bytes hash = 1;
 }
@@ -13,28 +25,6 @@ message VegvisirBlock {
     Block vegblock = 1;
 }
 
-message ProtocolVersion {
-    string name = 1;
-}
-
-message ProtocolVersions {
-    repeated ProtocolVersion protocols = 1;
-}
-
-// Maps each user's name to their leading block on a device.
-message ClockMap {
-    string name = 1;
-    int32 leader = 2;
-}
-
-message VectorClock {
-    repeated ClockMap vector_clocks = 1;
-    // The number of blocks the peer can send during a vector
-    // protocol reconciliation round.
-    int32 send_limit = 2;
-}
-
-message Update {
 // Types of requests that can be received from peer.
 message PeerRequest{
     
@@ -96,12 +86,16 @@ message ClockMap {
 
 message VectorClock {
     repeated ClockMap vector_clocks = 1;
+    // The number of blocks the peer can send during a vector
+    // protocol reconciliation round.
+    int32 send_limit = 2;
 }
 
 message Update {
     oneof peer_updates {
         VectorClock current_view = 1;
         // TO:DO; Add least happenings updates
+    }
 }
 
 // The most general message to be received from the wire.
@@ -110,4 +104,5 @@ message VegvisirMessage {
         PeerRequest request = 1;
         PeerResponse response = 2;
         Update update = 3;
-} 
+    } 
+}
