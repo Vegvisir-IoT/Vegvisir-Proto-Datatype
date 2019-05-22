@@ -12,7 +12,6 @@ import "vegvisirCommon.proto";
 
 message Block {
 
-
     message VectorClock {
         message Value {
             charlotte.CryptoId cryptoId = 1;
@@ -20,7 +19,14 @@ message Block {
             int32 index = 3;
         }
 
-        repeated Value values = 1;
+        map<string, Value> values = 1;
+
+
+//        repeated Value values = 1;
+    }
+
+    message Transaction {
+        string placeholder = 1;
     }
 
     message GenesisBlock {
@@ -33,10 +39,8 @@ message Block {
         vegvisir.common.datatype.Location location = 3;
         repeated charlotte.Reference parents = 4;
         repeated Transaction transactions = 5;
-    }
-
-    message Transaction {
-        string placeholder = 1;
+        charlotte.CryptoId cryptoID = 6;
+        VectorClock clock = 7;
     }
 
     charlotte.Signature signature = 1;
@@ -44,11 +48,9 @@ message Block {
     oneof blocktype_oneof {
         GenesisBlock genesis_block = 2;
         UserBlock block = 3;
+        Block.VectorClock vector_clock = 4;
     }
 
-    charlotte.CryptoId cryptoID = 4;
-
-    VectorClock clock = 5;
 }
 
 
