@@ -26,7 +26,14 @@ message Block {
     }
 
     message Transaction {
-        string placeholder = 1;
+        message TransactionId {
+            string deviceId = 1;
+            int64 transactionHeight = 2;
+        }
+        string topic = 1;
+        TransactionId transactionId = 2;
+        repeated TransactionId dependencies = 3;
+        bytes payload = 4;
     }
 
     message GenesisBlock {
