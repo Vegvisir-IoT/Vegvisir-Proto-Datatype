@@ -10,13 +10,6 @@ package overhaul.protos;
 import "overhaul/protos/common.proto";
 import "overhaul/protos/vegvisirlower.proto";
 
-// message Transaction {
-//     string userid = 1;
-//     double timestamp = 2;
-//     int32 recordid = 3;
-//     bytes comment = 4;
-// }
-
 message Certificate {
     string userid = 9;
     bytes public_key = 10;
@@ -59,15 +52,6 @@ message Block {
 }
 
 message Blockchain {
-    // message GenesisBlock {
-    //     string userid = 1;
-    //     float timestamp = 2;
-    //     Certificate ca_certificate = 3;
-    //     repeated Certificate certlist = 4;
-    //     // Signed by CA, users not longer get access to CA certificate.
-    //     bytes signature = 5;
-    // }
-
     message UseridAssociations {
         string userid = 5;
     }
